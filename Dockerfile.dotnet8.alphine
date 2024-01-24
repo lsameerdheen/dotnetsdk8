@@ -1,0 +1,30 @@
+#From  baselined alpine image
+#Change the below from base image with NYL alpine image
+FROM alpine as base 
+
+#Dotnet 8 is not supported as package in alphine so we need to run the script
+RUN apk update && apk upgrade -U -a
+RUN apk --update add  --no-cache krb5-libs 
+RUN apk --update add  --no-cache libgcc 
+RUN apk  --update add  --no-cache libintl 
+RUN apk  --update add  --no-cache  icu-libs
+RUN apk  --update add  --no-cache libstdc++ 
+RUN apk  --update add  --no-cache zlib
+RUN apk add --no-cache bash
+COPY . .
+RUN chmod +x ./dotnet-install_alphine.sh
+RUN ./dotnet-install_alphine.sh --channel 8.0 
+RUN ls /root
+ENV DOTNET_ROOT "/root/.dotnet"
+ENV PATH "$PATH:/root/.dotnet:/root/.dotnet/tools"
+RUN echo $PATH
+RUN dotnet --help
+
+
+
+
+
+
+
+
+
